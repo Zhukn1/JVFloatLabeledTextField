@@ -4,7 +4,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2013 Jared Verdi
+//  Copyright (c) 2013-2015 Jared Verdi
 //  Original Concept by Matt D. Smith
 //  http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction?list=users
 //
@@ -39,25 +39,25 @@
 
 @implementation JVFloatLabeledTextView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-	    [self commonInit];
+        [self commonInit];
     }
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self commonInit];
-        
+
         // force setter to be called on a placeholder defined in a NIB/Storyboard
-    	if (self.placeholder) {
-        	self.placeholder = self.placeholder;
-    	}
+        if (self.placeholder) {
+            self.placeholder = self.placeholder;
+        }
     }
     return self;
 }
@@ -88,8 +88,7 @@
     _floatingLabel.font = _floatingLabelFont;
     _floatingLabelTextColor = [UIColor grayColor];
     _floatingLabel.textColor = _floatingLabelTextColor;
-    _floatingLabelActiveTextColor = self.tintColor;
-    _animateEvenIfNotFirstResponder = NO;
+    _animateEvenIfNotFirstResponder = 0;
     _floatingLabelShowAnimationDuration = kFloatingLabelShowAnimationDuration;
     _floatingLabelHideAnimationDuration = kFloatingLabelHideAnimationDuration;
 
@@ -126,32 +125,39 @@
 {
     _placeholder = placeholder;
     _placeholderLabel.text = placeholder;
-    [_placeholderLabel sizeToFit];
-    
     _floatingLabel.text = placeholder;
-    [_floatingLabel sizeToFit];
-    if (self.floatingLabelShouldLockToTop) {
+    
+    if (0 != self.floatingLabelShouldLockToTop) {
         _floatingLabel.frame = CGRectMake(_floatingLabel.frame.origin.x,
                                           _floatingLabel.frame.origin.y,
                                           self.frame.size.width,
                                           _floatingLabel.frame.size.height);
     }
+    
+    [self setNeedsLayout];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder floatingTitle:(NSString *)floatingTitle
 {
     _placeholder = placeholder;
     _placeholderLabel.text = placeholder;
-    [_placeholderLabel sizeToFit];
-
     _floatingLabel.text = floatingTitle;
-    [_floatingLabel sizeToFit];
+    
+    [self setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     [self adjustTextContainerInsetTop];
+    
+    [_placeholderLabel sizeToFit];
+    [_floatingLabel sizeToFit];
+    
+    _floatingLabel.frame = CGRectMake(_floatingLabel.frame.origin.x,
+                                      _floatingLabel.frame.origin.y,
+                                      self.frame.size.width,
+                                      _floatingLabel.bounds.size.height);
     
     CGRect textRect = [self textRect];
     
@@ -166,7 +172,8 @@
     }
     
     BOOL firstResponder = self.isFirstResponder;
-    _floatingLabel.textColor = (firstResponder && self.text && self.text.length > 0 ? self.labelActiveColor : self.floatingLabelTextColor);
+    _floatingLabel.textColor = (firstResponder && self.text && self.text.length > 0 ?
+                                self.labelActiveColor : self.floatingLabelTextColor);
     if (!self.text || 0 == [self.text length]) {
         [self hideFloatingLabel:firstResponder];
     }
@@ -191,7 +198,7 @@
     void (^showBlock)() = ^{
         _floatingLabel.alpha = 1.0f;
         CGFloat top = _floatingLabelYPadding;
-        if (self.floatingLabelShouldLockToTop) {
+        if (0 != self.floatingLabelShouldLockToTop) {
             top += self.contentOffset.y;
         }
         _floatingLabel.frame = CGRectMake(_floatingLabel.frame.origin.x,
@@ -200,8 +207,8 @@
                                           _floatingLabel.frame.size.height);
     };
     
-    if ((animated || _animateEvenIfNotFirstResponder)
-        && (!self.floatingLabelShouldLockToTop || _floatingLabel.alpha != 1.0f)) {
+    if ((animated || 0 != _animateEvenIfNotFirstResponder)
+        && (0 == self.floatingLabelShouldLockToTop || _floatingLabel.alpha != 1.0f)) {
         [UIView animateWithDuration:_floatingLabelShowAnimationDuration
                               delay:0.0f
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
@@ -224,7 +231,7 @@
         
     };
     
-    if (animated || _animateEvenIfNotFirstResponder) {
+    if (animated || 0 != _animateEvenIfNotFirstResponder) {
         [UIView animateWithDuration:_floatingLabelHideAnimationDuration
                               delay:0.0f
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
@@ -238,8 +245,11 @@
 
 - (void)adjustTextContainerInsetTop
 {
-    self.textContainerInset = UIEdgeInsetsMake(self.startingTextContainerInsetTop + _floatingLabel.font.lineHeight + _placeholderYPadding,
-                                               self.textContainerInset.left, self.textContainerInset.bottom, self.textContainerInset.right) ;
+    self.textContainerInset = UIEdgeInsetsMake(self.startingTextContainerInsetTop
+                                               + _floatingLabel.font.lineHeight + _placeholderYPadding,
+                                               self.textContainerInset.left,
+                                               self.textContainerInset.bottom,
+                                               self.textContainerInset.right);
 }
 
 - (void)setLabelOriginForTextAlignment
@@ -253,12 +263,15 @@
     }
     else if (self.textAlignment == NSTextAlignmentRight) {
         floatingLabelOriginX = self.frame.size.width - _floatingLabel.frame.size.width;
-        placeholderLabelOriginX = self.frame.size.width - _placeholderLabel.frame.size.width - self.textContainerInset.right;
-    } else if (self.textAlignment == NSTextAlignmentNatural) {
+        placeholderLabelOriginX = (self.frame.size.width
+                                   - _placeholderLabel.frame.size.width - self.textContainerInset.right);
+    }
+    else if (self.textAlignment == NSTextAlignmentNatural) {
         JVTextDirection baseDirection = [_floatingLabel.text getBaseDirection];
         if (baseDirection == JVTextDirectionRightToLeft) {
             floatingLabelOriginX = self.frame.size.width - _floatingLabel.frame.size.width;
-            placeholderLabelOriginX = self.frame.size.width - _placeholderLabel.frame.size.width - self.textContainerInset.right;
+            placeholderLabelOriginX = (self.frame.size.width
+                                       - _placeholderLabel.frame.size.width - self.textContainerInset.right);
         }
     }
     
@@ -300,7 +313,6 @@
 - (void)setTextAlignment:(NSTextAlignment)textAlignment
 {
     [super setTextAlignment:textAlignment];
-    
     [self setNeedsLayout];
 }
 
@@ -314,7 +326,6 @@
 - (void)setText:(NSString *)text
 {
     [super setText:text];
-    
     [self layoutSubviews];
 }
 
@@ -328,22 +339,9 @@
 {
     [super setBackgroundColor:backgroundColor];
     
-    if (self.floatingLabelShouldLockToTop) {
+    if (0 != self.floatingLabelShouldLockToTop) {
         _floatingLabel.backgroundColor = self.backgroundColor;
     }
-}
-
-#pragma mark - Accessibility
-
-- (NSString *)accessibilityLabel
-{
-    NSString *accessibilityLabel;
-    if (![self.text isEqualToString:@""]) {
-        accessibilityLabel = [NSString stringWithFormat:@"%@ %@", [self.floatingLabel accessibilityLabel], self.text];
-    } else {
-        accessibilityLabel = [self.floatingLabel accessibilityLabel];
-    }
-    return accessibilityLabel;
 }
 
 @end

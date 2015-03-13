@@ -4,7 +4,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2013 Jared Verdi
+//  Copyright (c) 2013-2015 Jared Verdi
 //  Original Concept by Matt D. Smith
 //  http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction?list=users
 //
@@ -33,7 +33,8 @@
  * Due to space constraints on mobile devices, it is common to rely solely on placeholders as a means to label fields.
  * This presents a UX problem, in that, once the user begins to fill out a form, no labels are present.
  *
- * `JVFloatLabeledTextField` aims to improve the user experience by having placeholders transition into "floating labels" that hover above the text field after it is populated with text.
+ * `JVFloatLabeledTextField` aims to improve the user experience by having placeholders transition into 
+ * "floating labels" that hover above the text field after it is populated with text.
  *
  * JVFloatLabeledTextField supports iOS 6+.
  *
@@ -81,7 +82,7 @@
 /**
  * Indicates whether the floating label's appearance should be animated regardless of first responder status.
  * By default, animation only occurs if the text field is a first responder.
- * Non-zero values indicate truthiness. (BOOL cannot be used with UI_APPEARANCE_SELECTOR).
+ * Non-zero values indicate truthiness. (BOOL cannot be used with UI_APPEARANCE_SELECTOR on iOS 7).
  */
 @property (nonatomic, assign) NSInteger animateEvenIfNotFirstResponder UI_APPEARANCE_SELECTOR;
 
@@ -112,6 +113,13 @@
  * Color to be applied to the underline. Defaults to `[UIColor lightGrayColor]`.
  */
 @property (nonatomic, strong) UIColor * underlineColor UI_APPEARANCE_SELECTOR;
+
+/**
+ * Indicates whether the clearButton position is adjusted to align with the text
+ * Defaults to 1.
+ * Non-zero values indicate truthiness. (BOOL cannot be used with UI_APPEARANCE_SELECTOR on iOS 7).
+ */
+@property (nonatomic, assign) NSInteger adjustsClearButtonRect UI_APPEARANCE_SELECTOR;
 
 /**
  *  Sets the placeholder and the floating title

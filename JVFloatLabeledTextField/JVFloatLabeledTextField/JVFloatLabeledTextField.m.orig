@@ -42,11 +42,23 @@
     return self;
 }
 
+<<<<<<< HEAD
+- (id)initWithCoder:(NSCoder *)aDecoder
+=======
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self commonInit];
+<<<<<<< HEAD
+        
+        // force setter to be called on a placeholder defined in a NIB/Storyboard
+        if (self.placeholder) {
+            self.placeholder = self.placeholder;
+        }
+=======
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
     }
     return self;
 }
@@ -65,12 +77,15 @@
     _animateEvenIfNotFirstResponder = 0;
     _floatingLabelShowAnimationDuration = kFloatingLabelShowAnimationDuration;
     _floatingLabelHideAnimationDuration = kFloatingLabelHideAnimationDuration;
+<<<<<<< HEAD
     _hasUnderline = NO;
     _underlineHight = 0.5f;
     _underlineColor = [UIColor lightGrayColor];
+=======
     [self setFloatingLabelText:self.placeholder];
     
     _adjustsClearButtonRect = 1;
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
 }
 
 #pragma mark -
@@ -180,19 +195,37 @@
 - (void)setPlaceholder:(NSString *)placeholder
 {
     [super setPlaceholder:placeholder];
+<<<<<<< HEAD
+    
+    _floatingLabel.text = placeholder;
+    [_floatingLabel sizeToFit];
+=======
     [self setFloatingLabelText:placeholder];
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
 }
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder
 {
     [super setAttributedPlaceholder:attributedPlaceholder];
+<<<<<<< HEAD
+    
+    _floatingLabel.text = attributedPlaceholder.string;
+    [_floatingLabel sizeToFit];
+=======
     [self setFloatingLabelText:attributedPlaceholder.string];
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
 }
 
 - (void)setPlaceholder:(NSString *)placeholder floatingTitle:(NSString *)floatingTitle
 {
     [super setPlaceholder:placeholder];
+<<<<<<< HEAD
+    
+    _floatingLabel.text = floatingTitle;
+    [_floatingLabel sizeToFit];
+=======
     [self setFloatingLabelText:floatingTitle];
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
 }
 
 - (CGRect)textRectForBounds:(CGRect)bounds
@@ -220,12 +253,19 @@
 - (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
     CGRect rect = [super clearButtonRectForBounds:bounds];
+<<<<<<< HEAD
+    if ([self.text length]) {
+        CGFloat topInset = ceilf(_floatingLabel.font.lineHeight + _placeholderYPadding);
+        topInset = MIN(topInset, [self maxTopInset]);
+        rect = CGRectMake(rect.origin.x, rect.origin.y + topInset / 2.0f, rect.size.width, rect.size.height);
+=======
     if (0 != self.adjustsClearButtonRect) {
         if ([self.text length]) {
             CGFloat topInset = ceilf(_floatingLabel.font.lineHeight + _placeholderYPadding);
             topInset = MIN(topInset, [self maxTopInset]);
             rect = CGRectMake(rect.origin.x, rect.origin.y + topInset / 2.0f, rect.size.width, rect.size.height);
         }
+>>>>>>> ec75ebdd0fc51230e93b7b680e0e96d1a77de7a9
     }
     return CGRectIntegral(rect);
 }
@@ -289,19 +329,6 @@
     CGPathRelease(path);
     
     [self.layer addSublayer:shapeLayer];
-}
-
-#pragma mark - Accessibility
-
-- (NSString *)accessibilityLabel
-{
-    NSString *accessibilityLabel;
-    if ([self.text isEqualToString:@""] == NO) {
-        accessibilityLabel = [self.floatingLabel accessibilityLabel];
-    } else {
-        accessibilityLabel = self.text;
-    }
-    return accessibilityLabel;
 }
 
 @end
