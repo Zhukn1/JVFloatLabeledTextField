@@ -4,7 +4,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2013 Jared Verdi
+//  Copyright (c) 2013-2015 Jared Verdi
 //  Original Concept by Matt D. Smith
 //  http://dribbble.com/shots/1254439--GIF-Mobile-Form-Interaction?list=users
 //
@@ -54,11 +54,14 @@
     XCTAssertEqual(self.testView.placeholderYPadding, 0.0f);
     XCTAssertEqual(self.testView.floatingLabelFont, [UIFont boldSystemFontOfSize:12.0f]);
     XCTAssertEqual(self.testView.floatingLabelFont, self.testView.floatingLabel.font);
-    XCTAssert(CGColorEqualToColor(self.testView.floatingLabelTextColor.CGColor, [UIColor grayColor].CGColor));
-    XCTAssert(CGColorEqualToColor(self.testView.floatingLabelTextColor.CGColor, self.testView.floatingLabel.textColor.CGColor));
-    XCTAssert(CGColorEqualToColor(self.testView.floatingLabelActiveTextColor.CGColor, self.testView.tintColor.CGColor));
+    XCTAssert(CGColorEqualToColor(self.testView.floatingLabelTextColor.CGColor,
+                                  [UIColor grayColor].CGColor));
+    XCTAssert(CGColorEqualToColor(self.testView.floatingLabelTextColor.CGColor,
+                                  self.testView.floatingLabel.textColor.CGColor));
+    XCTAssertNil(self.testView.floatingLabelActiveTextColor);
     XCTAssertEqual(self.testView.floatingLabelShouldLockToTop, 1);
-    XCTAssert(CGColorEqualToColor(self.testView.placeholderTextColor.CGColor, [[UIColor lightGrayColor] colorWithAlphaComponent:0.65f].CGColor));
+    XCTAssert(CGColorEqualToColor(self.testView.placeholderTextColor.CGColor,
+                                  [[UIColor lightGrayColor] colorWithAlphaComponent:0.65f].CGColor));
     XCTAssertEqual(self.testView.animateEvenIfNotFirstResponder, 0);
     XCTAssertEqual(self.testView.floatingLabelShowAnimationDuration, 0.3f);
     XCTAssertEqual(self.testView.floatingLabelHideAnimationDuration, 0.3f);
