@@ -51,7 +51,7 @@
 {
     XCTAssertEqual(self.testField.floatingLabelYPadding, 0.0f);
     XCTAssertEqual(self.testField.placeholderYPadding, 0.0f);
-    XCTAssertEqual(self.testField.floatingLabelFont, [UIFont boldSystemFontOfSize:12.0f]);
+    XCTAssertNotNil(self.testField.floatingLabelFont);
     XCTAssertEqual(self.testField.floatingLabelFont, self.testField.floatingLabel.font);
     XCTAssert(CGColorEqualToColor(self.testField.floatingLabelTextColor.CGColor,
                                   [UIColor grayColor].CGColor));
@@ -64,6 +64,32 @@
     XCTAssertEqual(self.testField.hasUnderline, NO);
     XCTAssertEqual(self.testField.underlineHight, 0.5f);
     XCTAssert(CGColorEqualToColor(self.testField.underlineColor.CGColor, [UIColor lightGrayColor].CGColor));
+}
+
+- (void)testHorizontalOffset
+{
+    self.testField.floatingLabelXPadding = -100;
+    [self.testField layoutSubviews];
+    XCTAssertEqual(self.testField.floatingLabel.frame.origin.x, -100);
+}
+
+- (void)testKeepBaseline
+{
+    self.testField.keepBaseline = 1;
+
+    CGRect textRectInitial = [self.testField textRectForBounds:self.testField.bounds];
+    CGRect editRectInitial = [self.testField editingRectForBounds:self.testField.bounds];
+    CGRect clearRectInitial = [self.testField clearButtonRectForBounds:self.testField.bounds];
+
+    self.testField.text = @"hello world!";
+
+    CGRect textRectFinal = [self.testField textRectForBounds:self.testField.bounds];
+    CGRect editRectFinal = [self.testField editingRectForBounds:self.testField.bounds];
+    CGRect clearRectFinal = [self.testField clearButtonRectForBounds:self.testField.bounds];
+
+    XCTAssert(CGRectEqualToRect(textRectInitial, textRectFinal));
+    XCTAssert(CGRectEqualToRect(editRectInitial, editRectFinal));
+    XCTAssert(CGRectEqualToRect(clearRectInitial, clearRectFinal));
 }
 
 @end

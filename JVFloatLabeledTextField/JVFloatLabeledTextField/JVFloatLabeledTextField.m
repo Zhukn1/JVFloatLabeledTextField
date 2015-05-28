@@ -28,10 +28,13 @@
 #import "JVFloatLabeledTextField.h"
 #import "NSString+TextDirectionality.h"
 
-#define kFloatingLabelShowAnimationDuration 0.3f
-#define kFloatingLabelHideAnimationDuration 0.3f
+static CGFloat const kFloatingLabelShowAnimationDuration = 0.3f;
+static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 @implementation JVFloatLabeledTextField
+{
+    BOOL _isFloatingLabelFontDefault;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -58,22 +61,53 @@
     [self addSubview:_floatingLabel];
     
     // some basic default fonts/colors
-    _floatingLabelFont = [UIFont boldSystemFontOfSize:12.0f];
+    _floatingLabelFont = [self defaultFloatingLabelFont];
     _floatingLabel.font = _floatingLabelFont;
     _floatingLabelTextColor = [UIColor grayColor];
     _floatingLabel.textColor = _floatingLabelTextColor;
-    _animateEvenIfNotFirstResponder = 0;
+    _animateEvenIfNotFirstResponder = NO;
     _floatingLabelShowAnimationDuration = kFloatingLabelShowAnimationDuration;
     _floatingLabelHideAnimationDuration = kFloatingLabelHideAnimationDuration;
     _hasUnderline = NO;
     _underlineHight = 0.5f;
     _underlineColor = [UIColor lightGrayColor];
     [self setFloatingLabelText:self.placeholder];
-    
-    _adjustsClearButtonRect = 1;
+
+    _adjustsClearButtonRect = YES;
+    _isFloatingLabelFontDefault = YES;
 }
 
 #pragma mark -
+
+- (UIFont *)defaultFloatingLabelFont
+{
+    UIFont *textFieldFont = nil;
+    
+    if (!textFieldFont && self.attributedPlaceholder && self.attributedPlaceholder.length > 0) {
+        textFieldFont = [self.attributedPlaceholder attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
+    }
+    if (!textFieldFont && self.attributedText && self.attributedText.length > 0) {
+        textFieldFont = [self.attributedText attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
+    }
+    if (!textFieldFont) {
+        textFieldFont = self.font;
+    }
+    
+    return [UIFont fontWithName:textFieldFont.fontName size:roundf(textFieldFont.pointSize * 0.7f)];
+}
+
+- (void)updateDefaultFloatingLabelFont
+{
+    UIFont *derivedFont = [self defaultFloatingLabelFont];
+    
+    if (_isFloatingLabelFontDefault) {
+        self.floatingLabelFont = derivedFont;
+    }
+    else {
+        // dont apply to the label, just store for future use where floatingLabelFont may be reset to nil
+        _floatingLabelFont = derivedFont;
+    }
+}
 
 - (UIColor *)labelActiveColor
 {
@@ -88,8 +122,11 @@
 
 - (void)setFloatingLabelFont:(UIFont *)floatingLabelFont
 {
-    _floatingLabelFont = floatingLabelFont;
-    _floatingLabel.font = (_floatingLabelFont ? _floatingLabelFont : [UIFont boldSystemFontOfSize:12.0f]);
+    if (floatingLabelFont != nil) {
+        _floatingLabelFont = floatingLabelFont;
+    }
+    _floatingLabel.font = _floatingLabelFont ? _floatingLabelFont : [self defaultFloatingLabelFont];
+    _isFloatingLabelFontDefault = floatingLabelFont == nil;
     [self setFloatingLabelText:self.placeholder];
     [self invalidateIntrinsicContentSize];
 }
@@ -158,7 +195,7 @@
         }
     }
     
-    _floatingLabel.frame = CGRectMake(originX, _floatingLabel.frame.origin.y,
+    _floatingLabel.frame = CGRectMake(originX + _floatingLabelXPadding, _floatingLabel.frame.origin.y,
                                       _floatingLabel.frame.size.width, _floatingLabel.frame.size.height);
 }
 
@@ -170,11 +207,24 @@
 
 #pragma mark - UITextField
 
+- (void)setFont:(UIFont *)font
+{
+    [super setFont:font];
+    [self updateDefaultFloatingLabelFont];
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    [super setAttributedText:attributedText];
+    [self updateDefaultFloatingLabelFont];
+}
+
 - (CGSize)intrinsicContentSize
 {
     CGSize textFieldIntrinsicContentSize = [super intrinsicContentSize];
+    [_floatingLabel sizeToFit];
     return CGSizeMake(textFieldIntrinsicContentSize.width,
-                      textFieldIntrinsicContentSize.height + _floatingLabelYPadding + _floatingLabel.font.lineHeight);
+                      textFieldIntrinsicContentSize.height + _floatingLabelYPadding + _floatingLabel.bounds.size.height);
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
@@ -187,6 +237,7 @@
 {
     [super setAttributedPlaceholder:attributedPlaceholder];
     [self setFloatingLabelText:attributedPlaceholder.string];
+    [self updateDefaultFloatingLabelFont];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder floatingTitle:(NSString *)floatingTitle
@@ -198,10 +249,8 @@
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
     CGRect rect = [super textRectForBounds:bounds];
-    if ([self.text length]) {
-        CGFloat topInset = ceilf(_floatingLabel.font.lineHeight + _placeholderYPadding);
-        topInset = MIN(topInset, [self maxTopInset]);
-        rect = UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(topInset, 0.0f, 0.0f, 0.0f));
+    if ([self.text length] || self.keepBaseline) {
+        rect = [self insetRectForBounds:rect];
     }
     return CGRectIntegral(rect);
 }
@@ -209,19 +258,23 @@
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
     CGRect rect = [super editingRectForBounds:bounds];
-    if ([self.text length]) {
-        CGFloat topInset = ceilf(_floatingLabel.font.lineHeight + _placeholderYPadding);
-        topInset = MIN(topInset, [self maxTopInset]);
-        rect = UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(topInset, 0.0f, 0.0f, 0.0f));
+    if ([self.text length] || self.keepBaseline) {
+        rect = [self insetRectForBounds:rect];
     }
     return CGRectIntegral(rect);
+}
+
+- (CGRect)insetRectForBounds:(CGRect)rect {
+    CGFloat topInset = ceilf(_floatingLabel.bounds.size.height + _placeholderYPadding);
+    topInset = MIN(topInset, [self maxTopInset]);
+    return CGRectMake(rect.origin.x, rect.origin.y + topInset / 2.0f, rect.size.width, rect.size.height);
 }
 
 - (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
     CGRect rect = [super clearButtonRectForBounds:bounds];
     if (0 != self.adjustsClearButtonRect) {
-        if ([self.text length]) {
+        if ([self.text length] || self.keepBaseline) {
             CGFloat topInset = ceilf(_floatingLabel.font.lineHeight + _placeholderYPadding);
             topInset = MIN(topInset, [self maxTopInset]);
             rect = CGRectMake(rect.origin.x, rect.origin.y + topInset / 2.0f, rect.size.width, rect.size.height);
@@ -251,7 +304,12 @@
         _floatingLabel.font = self.floatingLabelFont;
     }
     
-    [_floatingLabel sizeToFit];
+    CGSize floatingLabelSize = [_floatingLabel sizeThatFits:_floatingLabel.superview.bounds.size];
+    
+    _floatingLabel.frame = CGRectMake(_floatingLabel.frame.origin.x,
+                                      _floatingLabel.frame.origin.y,
+                                      floatingLabelSize.width,
+                                      floatingLabelSize.height);
     
     BOOL firstResponder = self.isFirstResponder;
     _floatingLabel.textColor = (firstResponder && self.text && self.text.length > 0 ?

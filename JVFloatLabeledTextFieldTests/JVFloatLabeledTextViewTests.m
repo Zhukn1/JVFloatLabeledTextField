@@ -52,7 +52,7 @@
     XCTAssertEqual(self.testView.placeholderLabel.text, self.testView.placeholder);
     XCTAssertEqual(self.testView.floatingLabelYPadding, 0.0f);
     XCTAssertEqual(self.testView.placeholderYPadding, 0.0f);
-    XCTAssertEqual(self.testView.floatingLabelFont, [UIFont boldSystemFontOfSize:12.0f]);
+    XCTAssertNotNil(self.testView.floatingLabelFont);
     XCTAssertEqual(self.testView.floatingLabelFont, self.testView.floatingLabel.font);
     XCTAssert(CGColorEqualToColor(self.testView.floatingLabelTextColor.CGColor,
                                   [UIColor grayColor].CGColor));
@@ -65,6 +65,13 @@
     XCTAssertEqual(self.testView.animateEvenIfNotFirstResponder, 0);
     XCTAssertEqual(self.testView.floatingLabelShowAnimationDuration, 0.3f);
     XCTAssertEqual(self.testView.floatingLabelHideAnimationDuration, 0.3f);
+}
+
+- (void)testHorizontalOffset
+{
+    self.testView.floatingLabelXPadding = -100;
+    [self.testView layoutSubviews];
+    XCTAssertEqual(self.testView.floatingLabel.frame.origin.x, -100);
 }
 
 @end
