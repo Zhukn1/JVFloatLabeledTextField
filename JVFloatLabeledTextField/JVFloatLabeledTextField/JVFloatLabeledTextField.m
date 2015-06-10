@@ -332,11 +332,13 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 - (void)addUnderlineView {
     
+    NSMutableArray *layersToRemove = [NSMutableArray array];
     for (CALayer *layer in self.layer.sublayers) {
         if ([layer.name isEqualToString:@"underline"]) {
-            [layer removeFromSuperlayer];
+            [layersToRemove addObject:layer];
         }
     }
+    [layersToRemove makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     [shapeLayer setName:@"underline"];
