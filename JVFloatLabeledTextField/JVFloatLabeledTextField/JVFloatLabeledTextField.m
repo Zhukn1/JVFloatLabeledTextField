@@ -331,7 +331,15 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 }
 
 - (void)addUnderlineView {
+    
+    for (CALayer *layer in self.layer.sublayers) {
+        if ([layer.name isEqualToString:@"underline"]) {
+            [layer removeFromSuperlayer];
+        }
+    }
+    
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    [shapeLayer setName:@"underline"];
     [shapeLayer setFrame:self.bounds];
     [shapeLayer setStrokeColor:self.underlineColor.CGColor];
     [shapeLayer setLineWidth:self.underlineHight];
