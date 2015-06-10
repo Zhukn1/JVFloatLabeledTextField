@@ -5,6 +5,9 @@ JVFloatLabeledTextField
 [![Pod Platform](http://img.shields.io/cocoapods/p/JVFloatLabeledTextField.svg)](http://cocoadocs.org/docsets/JVFloatLabeledTextField/)
 [![Pod License](http://img.shields.io/cocoapods/l/JVFloatLabeledTextField.svg)](http://jaredverdi.mit-license.org)
 
+###This subclass provides support for an underline view that can act as a separator between multiple copies of `JVFloatLabeledTextField`. 
+It has two properties `underlineHight` and `underlineColor`. Can be enabled like this: `hasUnderline = YES`
+
 `JVFloatLabeledTextField` is the first implementation a UX pattern that has come to be known the **"Float Label Pattern"**. 
 
 Due to space constraints on mobile devices, it is common to rely solely on placeholders as a means to label fields.
