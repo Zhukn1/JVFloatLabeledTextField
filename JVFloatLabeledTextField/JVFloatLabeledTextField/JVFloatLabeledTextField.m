@@ -30,6 +30,7 @@
 
 static CGFloat const kFloatingLabelShowAnimationDuration = 0.3f;
 static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
+static NSInteger const kLockImageViewTag = 777;
 
 @implementation JVFloatLabeledTextField
 {
@@ -206,6 +207,32 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 }
 
 #pragma mark - UITextField
+
+- (void)setEnabled:(BOOL)enabled {
+    [super setEnabled:enabled];
+    
+    UIView *currentView = self.rightView;
+    
+    if (currentView) {
+        if (currentView.tag != kLockImageViewTag) {
+            return;
+        }
+    }
+    
+    if (enabled) {
+        self.rightView = nil;
+        self.rightViewMode = UITextFieldViewModeNever;
+        self.textColor = [self.textColor colorWithAlphaComponent:1];
+    }
+    else {
+        UIImageView *lockImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+        lockImageView.backgroundColor = [UIColor clearColor];
+        lockImageView.image = [UIImage imageNamed:@"Lock"];
+        self.rightView = lockImageView;
+        self.rightViewMode = UITextFieldViewModeAlways;
+        self.textColor = [self.textColor colorWithAlphaComponent:0.5];
+    }
+}
 
 - (void)setFont:(UIFont *)font
 {
