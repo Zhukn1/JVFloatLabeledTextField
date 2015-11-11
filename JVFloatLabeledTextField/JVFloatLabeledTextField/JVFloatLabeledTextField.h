@@ -110,7 +110,14 @@
 @property (nonatomic) BOOL hasUnderline UI_APPEARANCE_SELECTOR;
 
 /**
- * Hight to be applied to the underline. Defaults to 0.5f.
+ * Indicated whether or not to show an down arrow icon on the right side of the text field.
+ * Defaults to NO.
+ */
+
+@property (nonatomic) BOOL showMultipleSelectionIcon UI_APPEARANCE_SELECTOR;
+
+/**
+ * Height to be applied to the underline. Defaults to 0.5f.
  * 0.5f makes a perfect 1 pixel line on retina displays.
  */
 @property (nonatomic) CGFloat underlineHight UI_APPEARANCE_SELECTOR;

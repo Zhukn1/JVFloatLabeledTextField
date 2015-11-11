@@ -30,7 +30,6 @@
 
 static CGFloat const kFloatingLabelShowAnimationDuration = 0.3f;
 static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
-static NSInteger const kLockImageViewTag = 777;
 
 @implementation JVFloatLabeledTextField
 {
@@ -211,17 +210,11 @@ static NSInteger const kLockImageViewTag = 777;
 - (void)setEnabled:(BOOL)enabled {
     [super setEnabled:enabled];
     
-    UIView *currentView = self.rightView;
-    
-    if (currentView) {
-        if (currentView.tag != kLockImageViewTag) {
-            return;
-        }
-    }
-    
     if (enabled) {
-        self.rightView = nil;
-        self.rightViewMode = UITextFieldViewModeNever;
+        if (!_showMultipleSelectionIcon) {
+            self.rightView = nil;
+            self.rightViewMode = UITextFieldViewModeNever;
+        }
         self.textColor = [self.textColor colorWithAlphaComponent:1];
     }
     else {
@@ -231,6 +224,17 @@ static NSInteger const kLockImageViewTag = 777;
         self.rightView = lockImageView;
         self.rightViewMode = UITextFieldViewModeAlways;
         self.textColor = [self.textColor colorWithAlphaComponent:0.5];
+    }
+}
+
+- (void)setShowMultipleSelectionIcon:(BOOL)showMultipleSelectionIcon {
+    _showMultipleSelectionIcon = showMultipleSelectionIcon;
+    if (showMultipleSelectionIcon && self.enabled) {
+        UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+        arrowImageView.backgroundColor = [UIColor clearColor];
+        arrowImageView.image = [UIImage imageNamed:@"Arrow_down"];
+        self.rightView = arrowImageView;
+        self.rightViewMode = UITextFieldViewModeAlways;
     }
 }
 

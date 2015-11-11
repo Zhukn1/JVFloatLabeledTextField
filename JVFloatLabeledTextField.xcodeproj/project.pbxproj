@@ -15,9 +15,12 @@
 		639EABFE1B0B5F83001DD7B5 /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9AB496183B2EBF00694AB0 /* JVFloatLabeledTextView.m */; };
 		639EABFF1B0B5F83001DD7B5 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 4306C37319531E7000CC0A4C /* NSString+TextDirectionality.m */; };
 		639EAC011B0B6013001DD7B5 /* JVFloatLabeledText.h in Headers */ = {isa = PBXBuildFile; fileRef = 639EABF41B0B5EC6001DD7B5 /* JVFloatLabeledText.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		79C725B41BD7BEFC007549DD /* Lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B31BD7BEFC007549DD /* Lock@2x.png */; settings = {ASSET_TAGS = (); }; };
-		79C725B61BD7BF04007549DD /* Lock@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B51BD7BF04007549DD /* Lock@3x.png */; settings = {ASSET_TAGS = (); }; };
-		79C725B81BD7BF0A007549DD /* Lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B71BD7BF0A007549DD /* Lock.png */; settings = {ASSET_TAGS = (); }; };
+		79C725B41BD7BEFC007549DD /* Lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B31BD7BEFC007549DD /* Lock@2x.png */; };
+		79C725B61BD7BF04007549DD /* Lock@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B51BD7BF04007549DD /* Lock@3x.png */; };
+		79C725B81BD7BF0A007549DD /* Lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 79C725B71BD7BF0A007549DD /* Lock.png */; };
+		79F10D441BF39C5400257CB5 /* Arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 79F10D411BF39C5400257CB5 /* Arrow_down.png */; };
+		79F10D451BF39C5400257CB5 /* Arrow_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79F10D421BF39C5400257CB5 /* Arrow_down@2x.png */; };
+		79F10D461BF39C5400257CB5 /* Arrow_down@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79F10D431BF39C5400257CB5 /* Arrow_down@3x.png */; };
 		7F394935199DE5E10069C867 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F394934199DE5E10069C867 /* XCTest.framework */; };
 		7F394936199DE5E10069C867 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F50335917FA7B0A0026FB7F /* Foundation.framework */; };
 		7F394937199DE5E10069C867 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F50335D17FA7B0A0026FB7F /* UIKit.framework */; };
@@ -65,9 +68,12 @@
 		639EABD51B0B5E6F001DD7B5 /* JVFloatLabeledText.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JVFloatLabeledText.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		639EABF41B0B5EC6001DD7B5 /* JVFloatLabeledText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledText.h; sourceTree = "<group>"; };
 		639EABF51B0B5EC6001DD7B5 /* JVFloatLabeledText-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "JVFloatLabeledText-Info.plist"; sourceTree = "<group>"; };
-		79C725B31BD7BEFC007549DD /* Lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Lock@2x.png"; sourceTree = "<group>"; };
-		79C725B51BD7BF04007549DD /* Lock@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Lock@3x.png"; sourceTree = "<group>"; };
-		79C725B71BD7BF0A007549DD /* Lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Lock.png; sourceTree = "<group>"; };
+		79C725B31BD7BEFC007549DD /* Lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Lock@2x.png"; path = "Images/Lock@2x.png"; sourceTree = "<group>"; };
+		79C725B51BD7BF04007549DD /* Lock@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Lock@3x.png"; path = "Images/Lock@3x.png"; sourceTree = "<group>"; };
+		79C725B71BD7BF0A007549DD /* Lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lock.png; path = Images/Lock.png; sourceTree = "<group>"; };
+		79F10D411BF39C5400257CB5 /* Arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Arrow_down.png; path = Images/Arrow_down.png; sourceTree = "<group>"; };
+		79F10D421BF39C5400257CB5 /* Arrow_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Arrow_down@2x.png"; path = "Images/Arrow_down@2x.png"; sourceTree = "<group>"; };
+		79F10D431BF39C5400257CB5 /* Arrow_down@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Arrow_down@3x.png"; path = "Images/Arrow_down@3x.png"; sourceTree = "<group>"; };
 		7F394933199DE5E10069C867 /* JVFloatLabeledTextFieldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JVFloatLabeledTextFieldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F394934199DE5E10069C867 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		7F39493A199DE5E10069C867 /* JVFloatLabeledTextFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JVFloatLabeledTextFieldTests-Info.plist"; sourceTree = "<group>"; };
@@ -127,6 +133,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		79F10D401BF39C2C00257CB5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				79F10D411BF39C5400257CB5 /* Arrow_down.png */,
+				79F10D421BF39C5400257CB5 /* Arrow_down@2x.png */,
+				79F10D431BF39C5400257CB5 /* Arrow_down@3x.png */,
+				79C725B71BD7BF0A007549DD /* Lock.png */,
+				79C725B31BD7BEFC007549DD /* Lock@2x.png */,
+				79C725B51BD7BF04007549DD /* Lock@3x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		7F394938199DE5E10069C867 /* JVFloatLabeledTextFieldTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,9 +244,7 @@
 				7F9AB496183B2EBF00694AB0 /* JVFloatLabeledTextView.m */,
 				4306C37219531E7000CC0A4C /* NSString+TextDirectionality.h */,
 				4306C37319531E7000CC0A4C /* NSString+TextDirectionality.m */,
-				79C725B71BD7BF0A007549DD /* Lock.png */,
-				79C725B31BD7BEFC007549DD /* Lock@2x.png */,
-				79C725B51BD7BF04007549DD /* Lock@3x.png */,
+				79F10D401BF39C2C00257CB5 /* Images */,
 			);
 			path = JVFloatLabeledTextField;
 			sourceTree = "<group>";
@@ -361,10 +378,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F10D451BF39C5400257CB5 /* Arrow_down@2x.png in Resources */,
 				79C725B81BD7BF0A007549DD /* Lock.png in Resources */,
+				79F10D441BF39C5400257CB5 /* Arrow_down.png in Resources */,
 				79C725B61BD7BF04007549DD /* Lock@3x.png in Resources */,
 				7F9020251809A39B00B43AD5 /* Default@2x.png in Resources */,
 				79C725B41BD7BEFC007549DD /* Lock@2x.png in Resources */,
+				79F10D461BF39C5400257CB5 /* Arrow_down@3x.png in Resources */,
 				7F9020231809A39B00B43AD5 /* Default-568h@2x.png in Resources */,
 				7F9020241809A39B00B43AD5 /* Default.png in Resources */,
 			);
