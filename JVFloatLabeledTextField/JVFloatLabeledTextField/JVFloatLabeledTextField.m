@@ -276,8 +276,13 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
-    [super setAttributedPlaceholder:str];
+    if (placeholder) {
+        NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
+        [super setAttributedPlaceholder:str];
+    }
+    else {
+        [super setPlaceholder:placeholder];
+    }
     [self setFloatingLabelText:placeholder];
 }
 
@@ -290,8 +295,13 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 - (void)setPlaceholder:(NSString *)placeholder floatingTitle:(NSString *)floatingTitle
 {
-    NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
-    [super setAttributedPlaceholder:str];
+    if (placeholder) {
+        NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
+        [super setAttributedPlaceholder:str];
+    }
+    else {
+        [super setPlaceholder:placeholder];
+    }
     [self setFloatingLabelText:floatingTitle];
 }
 
