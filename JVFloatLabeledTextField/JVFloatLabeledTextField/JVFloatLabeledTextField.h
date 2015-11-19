@@ -87,6 +87,12 @@
 @property (nonatomic, strong) UIColor * floatingLabelActiveTextColor;
 
 /**
+ * Text color to be applied to the placeholder label.
+ * Defaults to `floatingLabelTextColor`
+ */
+@property (nonatomic, strong) UIColor * placeholderColor;
+
+/**
  * Indicates whether the floating label's appearance should be animated regardless of first responder status.
  * By default, animation only occurs if the text field is a first responder.
  */

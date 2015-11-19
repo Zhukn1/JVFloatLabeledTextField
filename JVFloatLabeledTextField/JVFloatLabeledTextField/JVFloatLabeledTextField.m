@@ -64,6 +64,7 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     _floatingLabelFont = [self defaultFloatingLabelFont];
     _floatingLabel.font = _floatingLabelFont;
     _floatingLabelTextColor = [UIColor grayColor];
+    _placeholderColor = _floatingLabelTextColor;
     _floatingLabel.textColor = _floatingLabelTextColor;
     _animateEvenIfNotFirstResponder = NO;
     _floatingLabelShowAnimationDuration = kFloatingLabelShowAnimationDuration;
@@ -205,6 +206,21 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     [self setNeedsLayout];
 }
 
+- (void)setFloatingLabelTextColor:(UIColor *)floatingLabelTextColor {
+    if (_placeholderColor == _floatingLabelTextColor) {
+        _placeholderColor = floatingLabelTextColor;
+        [self setPlaceholder:self.placeholder];
+    }
+    _floatingLabelTextColor = floatingLabelTextColor;
+    [self setNeedsLayout];
+}
+
+- (void)setPlaceholderColor:(UIColor *)color {
+    _placeholderColor = color;
+    [self setPlaceholder:self.placeholder];
+    [self setNeedsLayout];
+}
+
 #pragma mark - UITextField
 
 - (void)setEnabled:(BOOL)enabled {
@@ -260,7 +276,8 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    [super setPlaceholder:placeholder];
+    NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
+    [super setAttributedPlaceholder:str];
     [self setFloatingLabelText:placeholder];
 }
 
@@ -273,7 +290,8 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
 
 - (void)setPlaceholder:(NSString *)placeholder floatingTitle:(NSString *)floatingTitle
 {
-    [super setPlaceholder:placeholder];
+    NSAttributedString *str = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : _placeholderColor}];
+    [super setAttributedPlaceholder:str];
     [self setFloatingLabelText:floatingTitle];
 }
 
